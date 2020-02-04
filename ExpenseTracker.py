@@ -45,6 +45,7 @@ def register():
     lGender.grid(sticky='w', padx = '30',pady='30')
 
     s = IntVar()
+
     rbMale = Radiobutton(register, text="Male", font=('Times New Roman', 16), variable=s, value=1)
     rbFemale = Radiobutton(register, text="Female", font=('Times New Roman', 16), variable=s, value=2)
     rbOther = Radiobutton(register, text="Other", font=('Times New Roman', 16), variable=s, value=3)
@@ -72,3 +73,4 @@ start.geometry('700x700+450+25')
 start.title("Expenso !")
 register()
 start.mainloop()
+#Trial
