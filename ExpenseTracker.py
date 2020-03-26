@@ -15,6 +15,6 @@ from Interface import Register, Start, Overview
 
     
 #Start Page
-start = Start.launchStart()
-register = Register.launchRegister(start)
+start = Start.launch()
+register = Register.launch(start)
 #Trial1

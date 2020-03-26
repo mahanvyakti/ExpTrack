@@ -1,10 +1,13 @@
 from tkinter import *
 
-def launchRegister(start):
+def launch(start):
     register = Tk()
-    register.geometry('800x800+450+25')
+    register.geometry('400x750+550+25')
     register.title("Expenso : Register ")
-    lRegTitle = Label(register, text="Welcome to Expenso !", font=('Times New Roman', 16))
+    lRegTitle = Label(register, text="Welcome to Expenso !", font=('Times New Roman', 16),bg="orange red")
+    lRegTitle.grid()
+    register.grid_rowconfigure(1, weight=0)
+    #register.grid_columnconfigure(1, weight=1)
     lRegSubTitle = Label(register, text="Please enter your details here", font=('Times New Roman', 13))
     #start.withdraw()
 
@@ -15,22 +18,22 @@ def launchRegister(start):
     lGender = Label(register, text="Gender:", font=('Times New Roman', 16))
 
     eName = Entry(register, text="")
-    eEmail = Entry(register, text="")
+    eEmail = Entry(register, text="",width=50)
     eAddress = Entry(register, text="", width=50)
-    eAge = Entry(register, text="")
+    eAge = Entry(register, text="",width=5)
     gender=""
 
-    lRegTitle.grid(sticky='w', padx = '50',pady='10')
-    lRegSubTitle.grid(sticky='w', padx = '50',pady='10')
-    lName.grid(sticky='w', padx = '30',pady='10')
-    eName.grid(sticky='w', padx = '30',pady='10')
-    lEmail.grid(sticky='w', padx = '30',pady='10')
-    eEmail.grid(sticky='w', padx = '30',pady='10')
-    lAge.grid(sticky='w', padx = '30',pady='10')
-    eAge.grid(sticky='w', padx = '30',pady='10')
-    lAddress.grid(sticky='w', padx = '30',pady='5')
-    eAddress.grid(sticky='w', padx = '30',pady='15')
-    lGender.grid(sticky='w', padx = '30',pady='30')
+    lRegTitle.grid(padx = '50',pady='10')
+    lRegSubTitle.grid( padx = '50',pady='10')
+    lName.grid( padx = '30',pady='10')
+    eName.grid( padx = '30',pady='10')
+    lEmail.grid( padx = '30',pady='10')
+    eEmail.grid( padx = '30',pady='10')
+    lAge.grid( padx = '30',pady='10')
+    eAge.grid( padx = '30',pady='10')
+    lAddress.grid( padx = '30',pady='5')
+    eAddress.grid( padx = '30',pady='15')
+    lGender.grid( padx = '30',pady='30')
 
     s = IntVar()
 
@@ -38,9 +41,9 @@ def launchRegister(start):
     rbFemale = Radiobutton(register, text="Female", font=('Times New Roman', 16), variable=s, value=2)
     rbOther = Radiobutton(register, text="Other", font=('Times New Roman', 16), variable=s, value=3)
 
-    rbMale.grid(sticky='w', padx = '30',pady=7)
-    rbFemale.grid(sticky='w', padx = '30',pady=7)
-    rbOther.grid(sticky='w', padx = '30',pady=7)
+    rbMale.grid(padx = '30',pady=7)
+    rbFemale.grid(padx = '30',pady=7)
+    rbOther.grid(padx = '30',pady=7)
 
     def Reg():
         nonlocal gender 
