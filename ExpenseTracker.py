@@ -1,4 +1,4 @@
-#importing libraries
+# importing libraries
 from tkinter import *
 from tkinter import scrolledtext
 from tkinter import messagebox
