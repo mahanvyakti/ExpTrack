@@ -11,9 +11,10 @@ import socket
 import datetime
 import bs4
 import operator
-from Interface import Register, Start, Overview
+from Interface import Start, Overview
+from Interface import Register
 
-    
+
 #Start Page
 start = Start.launch()
 register = Register.launch(start)
