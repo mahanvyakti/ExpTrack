@@ -1,7 +1,8 @@
 from tkinter import *
-def launchStart():
+def launch():
     start = Tk()
     start.geometry('800x800+450+25')
     start.title("Expenso !")
-    start.mainloop()
+    start.withdraw()
+    #start.mainloop()
     return start
