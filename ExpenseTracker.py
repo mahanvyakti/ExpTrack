@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import requests
 import pandas as pd
-import cx_Oracle   
+#import cx_Oracle
+import mysql.connector as mysql   
 import socket
 import datetime
 import bs4
@@ -18,3 +19,5 @@ from Interface import Register, Start, Overview
 start = Start.launchStart()
 register = Register.launchRegister(start)
 #Trial1
+
+
