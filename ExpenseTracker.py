@@ -1,24 +1,18 @@
-# importing libraries
-from tkinter import *
-from tkinter import scrolledtext
 from tkinter import messagebox
-import matplotlib.pyplot as plt
-import numpy as np
-import requests
-import pandas as pd
-#import cx_Oracle
-import mysql.connector as mysql   
-import socket
-import datetime
-import bs4
-import operator
-from Interface import Start, Overview
-from Interface import Register
-
+# import matplotlib.pyplot as plt
+# import numpy as np
+# import requests
+# import pandas as pd
+# #import cx_Oracle
+# import mysql.connector as mysql   
+# import socket
+# import datetime
+# import bs4
+# import operator
+from Interface import profile, AddIncome, AddExpense
+from Interface import Register, Home
 
 #Start Page
-start = Start.launch()
-register = Register.launch(start)
+
+register = Register.launch()
 #Trial1
-
-

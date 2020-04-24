@@ -1,16 +1,17 @@
 from tkinter import *
 import tkinter.messagebox as MessageBox
 import mysql.connector as mysql
+from Interface import Home
 
-def launch(start):
-    register = Toplevel()
+def launch():
+    register = Tk()
     register.geometry('400x750+550+25')
     register.title("Expenso : Register ")
     lRegTitle = Label(register, text="Welcome to Expenso !", font=('Times New Roman', 16),bg="orange red")
     lRegTitle.grid()
     register.grid_rowconfigure(1, weight=0)
     #register.grid_columnconfigure(1, weight=1)
-    lRegSubTitle = Label(register, text="Please enter your details here", font=('Times New Roman', 13))
+    lRegSubTitle = Label(register, text="Please enter your details here", font=('Times New Roman', 5))
     #start.withdraw()
 
     lName = Label(register, text="Enter your name :", font=('Times New Roman', 16))
@@ -40,7 +41,7 @@ def launch(start):
 
 
     lRegTitle.grid(padx = '50',pady='5')
-    lRegSubTitle.grid( padx = '20',pady='5')
+    lRegSubTitle.grid( padx = '20',pady='2')
 
     lUsername.grid( padx = '30',pady='5')
     eUsername.grid( padx = '30',pady='5')
@@ -149,6 +150,34 @@ def launch(start):
         finally:
             cur.close()
 
+        query = "INSERT INTO income (amount,source,date,username) VALUES (%s, %s, %s, %s)"
+        try:
+            con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
+            cur = con.cursor()
+            params = (0,"Null","0000-00-00 00:00:00",username)#YYYY-MM-DD HH:MI:SS
+            cur.execute(query,params)
+            cur.execute("commit")
+            
+        except mysql.Error as err:  
+            print(err)
+        else:
+            cur.close()
+            con.close()
+
+        query = "INSERT INTO budget (savings,budget,date,username1) VALUES (%s, %s, %s, %s)"
+        try:
+            con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
+            cur = con.cursor()
+            params = (0,0,"0000-00-00 00:00:00",username)#YYYY-MM-DD HH:MI:SS
+            cur.execute(query,params)
+            cur.execute("commit")
+            
+        except mysql.Error as err:
+            print(err)
+        else:
+            cur.close()
+            con.close()
+
     def Reg():
         nonlocal gender
         if s.get()==1:
@@ -162,12 +191,13 @@ def launch(start):
         if valid:
             insert(gender)
             register.withdraw()
-            start.deiconify()
+            username = eUsername.get()
+            Home.launch(username)  
 
-    btnRegister = Button(register, text="Register",font=('Times New Roman', 16, 'bold'), command = Reg)
+    btnRegister = Button(register, text="Register",font=('Times New Roman', 16, 'bold'), command =  Reg)
     btnRegister.grid()
     register.mainloop()
 
-
     return register
 
+#launch()
