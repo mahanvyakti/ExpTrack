@@ -1,7 +1,6 @@
 from tkinter import *
-from tkinter import messagebox
-
-import cx_Oracle
+import tkinter.messagebox as MessageBox
+import mysql.connector as mysql
 
 def launch(start):
     register = Toplevel()
@@ -19,24 +18,44 @@ def launch(start):
     lAge = Label(register, text="Enter your age :", font=('Times New Roman', 16))
     lAddress = Label(register, text="Enter your address :", font=('Times New Roman', 16))
     lGender = Label(register, text="Gender:", font=('Times New Roman', 16))
+    lUsername = Label(register, text="Enter Username:", font=('Times New Roman', 16))
+    lPassword = Label(register, text="Enter Password:", font=('Times New Roman', 16))
+    
 
     eName = Entry(register, text="")
     eEmail = Entry(register, text="",width=50)
     eAddress = Entry(register, text="", width=50)
     eAge = Entry(register, text="",width=5)
+    eUsername = Entry(register, text="",width=5)
+    ePassword = Entry(register, text="",width=5)
     gender = ""
 
-    lRegTitle.grid(padx = '50',pady='10')
-    lRegSubTitle.grid( padx = '50',pady='10')
-    lName.grid( padx = '30',pady='10')
-    eName.grid( padx = '30',pady='10')
-    lEmail.grid( padx = '30',pady='10')
-    eEmail.grid( padx = '30',pady='10')
-    lAge.grid( padx = '30',pady='10')
-    eAge.grid( padx = '30',pady='10')
+    eName = Entry(register, text="",width=25)
+    eEmail = Entry(register, text="",width=50)
+    eAddress = Entry(register, text="", width=50)
+    eAge = Entry(register, text="",width=5)
+    eUsername = Entry(register, text="",width=25)
+    ePassword = Entry(register, text="",width=25)
+    gender = ""
+
+
+    lRegTitle.grid(padx = '50',pady='5')
+    lRegSubTitle.grid( padx = '20',pady='5')
+
+    lUsername.grid( padx = '30',pady='5')
+    eUsername.grid( padx = '30',pady='5')
+    lPassword.grid( padx = '30',pady='5')
+    ePassword.grid( padx = '30',pady='5')
+    
+    lName.grid( padx = '30',pady='5')
+    eName.grid( padx = '30',pady='5')
+    lEmail.grid( padx = '30',pady='5')
+    eEmail.grid( padx = '30',pady='5')
+    lAge.grid( padx = '30',pady='5')
+    eAge.grid( padx = '30',pady='5')
     lAddress.grid( padx = '30',pady='5')
-    eAddress.grid( padx = '30',pady='15')
-    lGender.grid( padx = '30',pady='30')
+    eAddress.grid( padx = '30',pady='5')
+    lGender.grid( padx = '30',pady='5')
 
     s = IntVar()
 
@@ -44,9 +63,9 @@ def launch(start):
     rbFemale = Radiobutton(register, text="Female", font=('Times New Roman', 16), variable=s, value=2)
     rbOther = Radiobutton(register, text="Other", font=('Times New Roman', 16), variable=s, value=3)
 
-    rbMale.grid(padx = '30',pady=7)
-    rbFemale.grid(padx = '30',pady=7)
-    rbOther.grid(padx = '30',pady=7)
+    rbMale.grid(padx = '25',pady=5)
+    rbFemale.grid(padx = '25',pady=5)
+    rbOther.grid(padx = '25',pady=5)
 
     def validator():
         """
@@ -97,9 +116,38 @@ def launch(start):
             valid = True
             return valid
         
-        messagebox.showerror("Error", errorMessage)
+        MessageBox.showerror("Error", errorMessage)
         return valid
+        
+    def insert(gender):
+        name = eName.get()
+        email = eEmail.get()
+        address = eAddress.get()
+        age = eAge.get()
+        username = eUsername.get()
+        password = ePassword.get()
+        gen = gender
+        query = "INSERT INTO user (username,password,name,age,email,address,gender) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        try:
+            con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
+            cur = con.cursor()
+            params = (username,password,name,age,email,address,gen,)
+            cur.execute(query,params)
+            cur.execute("commit")
 
+            eName.delete(0,'end')
+            eEmail.delete(0,'end')
+            eAddress.delete(0,'end')
+            eAge.delete(0,'end')
+            eUsername.delete(0,'end')
+            ePassword.delete(0,'end')
+            
+            MessageBox.showinfo("Success","Inserted Successfully")
+        except mysql.Error as err:
+            print(err)
+            MessageBox.showerror("Error","Could not insert !")
+        finally:
+            cur.close()
 
     def Reg():
         nonlocal gender
@@ -112,14 +160,14 @@ def launch(start):
         
         valid = validator()
         if valid:
+            insert(gender)
             register.withdraw()
             start.deiconify()
-        """else:
-            pass"""
-
 
     btnRegister = Button(register, text="Register",font=('Times New Roman', 16, 'bold'), command = Reg)
     btnRegister.grid()
     register.mainloop()
+
+
     return register
 
