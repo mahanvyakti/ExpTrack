@@ -15,8 +15,8 @@ def launch(username):
 
     def back():
         profile.withdraw()
-    
 
+    
     def get_profile():
         eUsername.delete(0,'end')
         eName.delete(0,'end')
@@ -26,14 +26,17 @@ def launch(username):
         eGender.delete(0,'end')
         ePassword.delete(0,'end')
         
-        query = "SELECT * FROM user"
+        query = "SELECT username,password,name,age,email,address,gender FROM user WHERE username = %s"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
-            cur.execute(query)
+            params = (username,)
+            cur.execute(query,params)
             rows = cur.fetchall()
-
+            print(rows)
+            
             for row in rows:
+                print("For loop 1")
                 eUsername.insert(0, row[0])
                 eName.insert(0, row[2])
                 eAddress.insert(0, row[5])
@@ -42,13 +45,15 @@ def launch(username):
                 eGender.insert(0, row[6])
                 ePassword.insert(0, row[1])
 
+            
+
         except mysql.Error as err:
             print(err)
-            MessageBox.showerror("Error","Something went wrong !")
+            MessageBox.showerror("Error","Could not insert !")
         else:
             cur.close()
     
-
+    
     # Create left and right frames
     left_frame = Frame(profile, width=50, height=600, bg='grey')
     left_frame.grid(row=0, column=0)
@@ -61,19 +66,22 @@ def launch(username):
     toolbar = Frame(left_frame, width=50, height=600, bg='skyblue')
     toolbar.grid(row=0, column=0)
 
-    bProfile = Button(toolbar, text="Profile" ,command = get_profile)
-    bProfile.grid(row=0, column=0, padx=30, pady=5)
+    btnBack = Button(right_frame, text="Back", command=back)
+    btnBack.grid(row=10, column=0, padx=10, pady=10)
 
-    bAnalysis = Button(toolbar, text="Analysis")
-    bAnalysis.grid(row=1, column=0, padx=30,pady=5)
+    # bProfile = Button(toolbar, text="Profile" ,command = get_profile)
+    # bProfile.grid(row=0, column=0, padx=30, pady=5)
 
-    bAddIncome = Button(toolbar, text="Add Income", command=open_AddIncome)
-    bAddIncome.grid(row=2, column=0, padx=30,pady=5)
+    # bAnalysis = Button(toolbar, text="Analysis")
+    # bAnalysis.grid(row=1, column=0, padx=30,pady=5)
 
-    bAddExpense = Button(toolbar, text="Add Expense")
-    bAddExpense.grid(row=3, column=0, padx=30,pady=5)
+    # bAddIncome = Button(toolbar, text="Add Income", command=open_AddIncome)
+    # bAddIncome.grid(row=2, column=0, padx=30,pady=5)
 
-    username =  Label(container, text = "Username: ") 
+    # bAddExpense = Button(toolbar, text="Add Expense")
+    # bAddExpense.grid(row=3, column=0, padx=30,pady=5)
+
+    lusername =  Label(container, text = "Username: ") 
     name = Label(container, text = "Name: ") 
     address = Label(container, text = "Address: ")
     age =  Label(container, text = "Age: ") 
@@ -97,16 +105,13 @@ def launch(username):
     eGender.grid(row=14, column=10, pady=5)
     ePassword.grid(row=15, column=10, pady=5)
 
-    username.grid(row= 9 , column = 8,padx=10, pady=20)
+    lusername.grid(row= 9 , column = 8,padx=10, pady=20)
     name.grid(row= 10 , column = 8, padx=10, pady=10)
     address.grid(row= 11 , column = 8, padx=10, pady=10)
     age.grid(row= 12 , column = 8, padx=10, pady=10)
     email.grid(row= 13 , column = 8,padx=10, pady=10)
     gender.grid(row= 14 , column = 8,padx=10, pady=10)
     password.grid(row= 15 , column = 8,padx=10, pady=10)
-
-    Back = Button(container, text ="Back", command=back)
-    Back.grid(row=16, column=8)
 
 
 
@@ -116,12 +121,12 @@ def launch(username):
         address = eAddress.get()
         age = eAge.get()
         password = ePassword.get()
-        # gen = eGender.get()
-        query = "UPDATE user SET  password = %s,name = %s,age = %s,email = %s,address = %s "
+        gen = eGender.get()
+        query = "UPDATE user SET  password = %s,name = %s,age = %s,email = %s,address = %s  WHERE username = %s"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
-            params = (password,name,str(age),email,address,)
+            params = (password,name,str(age),email,address,username,)
             cur.execute(query,params)
             cur.execute("commit")
             
@@ -136,11 +141,11 @@ def launch(username):
             print(err)
             MessageBox.showerror("Error","Could not update !")
         finally:
-            cur.close()
+            cur.close()      
 
     btnUpdate = Button(container, text="Update Profile",font=('Times New Roman', 16, 'bold'), command = update_profile)
     btnUpdate.grid(row=100, column=10,padx = 50, pady = 50)
     get_profile()
-    profile.mainloop()    
+    profile.mainloop()
+    
 
-#launchProfile("tantanu")

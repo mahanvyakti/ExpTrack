@@ -1,11 +1,11 @@
 from tkinter import *
 import tkinter.messagebox as MessageBox
 import mysql.connector as mysql
-from Interface import Home
+import Home
 
 def launch():
     register = Tk()
-    register.geometry('400x750+550+25')
+    register.geometry('400x700+550+25')
     register.title("Expenso : Register ")
     lRegTitle = Label(register, text="Welcome to Expenso !", font=('Times New Roman', 16),bg="orange red")
     lRegTitle.grid()
@@ -13,6 +13,8 @@ def launch():
     #register.grid_columnconfigure(1, weight=1)
     lRegSubTitle = Label(register, text="Please enter your details here", font=('Times New Roman', 5))
     #start.withdraw()
+    
+    
 
     lName = Label(register, text="Enter your name :", font=('Times New Roman', 16))
     lEmail = Label(register, text="Enter your email :", font=('Times New Roman', 16))   
@@ -28,7 +30,7 @@ def launch():
     eAddress = Entry(register, text="", width=50)
     eAge = Entry(register, text="",width=5)
     eUsername = Entry(register, text="",width=5)
-    ePassword = Entry(register, text="",width=5)
+    ePassword = Entry(register, show="*",width=5)
     gender = ""
 
     eName = Entry(register, text="",width=25)
@@ -37,7 +39,7 @@ def launch():
     eAge = Entry(register, text="",width=5)
     eUsername = Entry(register, text="",width=25)
     ePassword = Entry(register, text="",width=25)
-    gender = ""
+    
 
 
     lRegTitle.grid(padx = '50',pady='5')
@@ -58,17 +60,33 @@ def launch():
     eAddress.grid( padx = '30',pady='5')
     lGender.grid( padx = '30',pady='5')
 
-    s = IntVar()
+    OPTIONS = [
+    "Male",
+    "Female",
+    "Other"
+    ] #etc
+    variable = StringVar(register)
+    variable.set("") # default value
+    w = OptionMenu(register, variable, *OPTIONS)
+    w.grid(padx = '25',pady=5)
+    
+    
 
+
+
+
+    """
+    s = IntVar()
     rbMale = Radiobutton(register, text="Male", font=('Times New Roman', 16), variable=s, value=1)
     rbFemale = Radiobutton(register, text="Female", font=('Times New Roman', 16), variable=s, value=2)
     rbOther = Radiobutton(register, text="Other", font=('Times New Roman', 16), variable=s, value=3)
 
-    rbMale.grid(padx = '25',pady=5)
+    
     rbFemale.grid(padx = '25',pady=5)
-    rbOther.grid(padx = '25',pady=5)
+    rbOther.grid(padx = '25',pady=5)"""
 
-    def validator():
+    def validator(gender):
+        
         """
         Validates data based on following requirements/conditions-
         name : 
@@ -121,6 +139,7 @@ def launch():
         return valid
         
     def insert(gender):
+        #nonlocal gender
         name = eName.get()
         email = eEmail.get()
         address = eAddress.get()
@@ -128,6 +147,7 @@ def launch():
         username = eUsername.get()
         password = ePassword.get()
         gen = gender
+
         query = "INSERT INTO user (username,password,name,age,email,address,gender) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
@@ -157,7 +177,6 @@ def launch():
             params = (0,"Null","0000-00-00 00:00:00",username)#YYYY-MM-DD HH:MI:SS
             cur.execute(query,params)
             cur.execute("commit")
-            
         except mysql.Error as err:  
             print(err)
         else:
@@ -171,6 +190,19 @@ def launch():
             params = (0,0,"0000-00-00 00:00:00",username)#YYYY-MM-DD HH:MI:SS
             cur.execute(query,params)
             cur.execute("commit")
+        except mysql.Error as err:
+            print(err)
+        else:
+            cur.close()
+            con.close()
+
+        query = "INSERT INTO expense (category,mode,amount,date,username) VALUES (%s, %s, %s, %s, %s)"
+        try:
+            con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
+            cur = con.cursor()
+            params = ("Null","Null",0,"0000-00-00 00:00:00",username)#YYYY-MM-DD HH:MI:SS
+            cur.execute(query,params)
+            cur.execute("commit")
             
         except mysql.Error as err:
             print(err)
@@ -179,23 +211,18 @@ def launch():
             con.close()
 
     def Reg():
-        nonlocal gender
-        if s.get()==1:
-            gender+="Male"
-        elif s.get()==2:
-            gender+="Female"
-        elif s.get()==3:
-            gender+="Other"
-        
-        valid = validator()
+        gender = variable.get()
+        valid = validator(gender)
         if valid:
             insert(gender)
             register.withdraw()
             username = eUsername.get()
             Home.launch(username)  
 
-    btnRegister = Button(register, text="Register",font=('Times New Roman', 16, 'bold'), command =  Reg)
+    btnRegister = Button(register, text="Register",font=('Times New Roman', 16, 'bold'), command = Reg)
     btnRegister.grid()
+    #btnBack = Button(register, text="Back",font=('Times New Roman', 16, 'bold'),command = back)
+    #btnBack.grid()
     register.mainloop()
 
     return register

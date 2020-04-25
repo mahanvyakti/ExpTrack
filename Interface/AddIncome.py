@@ -20,25 +20,21 @@ def launch(username):
         eamount.delete(0,'end')
         edate.delete(0,'end')
         esource.delete(0,'end')
-        query = "SELECT amount,date,source  FROM income"
+        query = "SELECT amount,date,source  FROM income WHERE username = %s"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
-            cur.execute(query)
+            params = (username,)
+            cur.execute(query,params)
             rows = cur.fetchall()
 
             for row in rows:
                 eamount.insert(0, row[0])
-                
-                if row[1] != None:
-                    edate.insert(0, row[1])
-                else:
-                    edate.insert(0, "Null")
-
-                if row[2]=="" or row[2]=="Null" or row[2]==None:
-                    esource.insert(0, "Null")
-                else:
-                    esource.insert(0, row[2])
+                edate.insert(0, row[1])
+                # if row[2]=="" or row[2]=="Null" or row[2]==None:
+                esource.insert(0, row[2])
+                # else:
+                #     esource.insert(0, row[2])
                 
         except mysql.Error as err:
             print(err)
@@ -51,11 +47,12 @@ def launch(username):
         # eSaving.delete(0,'end')
         # eBudget.delete(0,'end')
         # edate1.delete(0,'end')
-        query = "SELECT savings,budget,date FROM budget"
+        query = "SELECT savings,budget,date FROM budget WHERE username1 = %s"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
-            cur.execute(query)
+            params = (username,)
+            cur.execute(query,params)
             rows = cur.fetchall()
 
             for row in rows:
@@ -79,8 +76,7 @@ def launch(username):
         amount = eamount.get()
         date = edate.get()
         source = esource.get()
-        # username = e.get()
-        query = "UPDATE  income SET amount = %s,date = %s,source = %s,username = %s"
+        query = "UPDATE  income SET amount = %s,date = %s,source = %s WHERE username = %s"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
@@ -104,7 +100,7 @@ def launch(username):
         savings = eSaving.get()
         budget = eBudget.get()
         date1 = edate.get()
-        query = "UPDATE  budget SET savings = %s,budget =%s,date = %s,username1 = %s"
+        query = "UPDATE  budget SET savings = %s,budget =%s,date = %s WHERE username1 = %s"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
@@ -186,11 +182,11 @@ def launch(username):
     eBudget.grid(row = 3, column =8, padx =5, pady=10)
     budget.grid(row =3, column = 6, padx =5, pady=10)
     date1.grid(row=4, column=6, padx=5, pady=10)
-    edate1.grid(row=4, column=8, padx=5, pady=10)
+    edate1.grid(row=4, column=8, padx=5, pady=10)   
     #-------------------------------------------------------#
 
     get_income(eamount, edate, esource)
     get_budget(eSaving,eBudget,edate1)
     AddIncome.mainloop()
 
-#launch("tantanu")
+# launch("dodo")

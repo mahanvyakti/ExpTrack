@@ -9,10 +9,11 @@ from tkinter import messagebox
 # import datetime
 # import bs4
 # import operator
-from Interface import Profile, AddIncome, AddExpense
-from Interface import Register, Home
+from Interface import profile, AddIncome, AddExpense
+import Login
 
 #Start Page
 
-register = Register.launch()
+register = Login.launch()
+
 #Trial1

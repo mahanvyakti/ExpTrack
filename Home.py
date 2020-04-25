@@ -11,35 +11,34 @@ import socket
 import datetime 
 import bs4
 import operator"""
-from Interface import  profile, Register, AddIncome, AddExpense, Analysis
+from Interface import profile, AddIncome, AddExpense, Analysis
 
 
 def launch(username):
 
     def openAddIncome():
         AddIncome.launch(username)
-        pass
-
+        
 
     def openAddExpense():
         AddExpense.launch(username)
-        pass
+        
     
     
     def openProfile():
         profile.launch(username)
         #Home.deiconify()
-        pass
+        
 
 
-    def openAnalysis():
+    def openAnalysis(username):
         Analysis.launch(username)
-        pass
+        
 
     
     Home = Tk()
     Home.geometry("900x500+100+25")
-    Home.title("Expenso :  Dashboard ")
+    Home.title("Expenso :  Home ")
     Home.maxsize(900, 600) # specify the max size the window can expand to
     Home.config(bg="skyblue") # specify background color
 
@@ -58,7 +57,7 @@ def launch(username):
     bProfile = Button(toolbar, text="Profile", command = openProfile) # ADD COMMAND open_profile()
     bProfile.grid(row=0, column=0, padx=30, pady=5)
 
-    bAnalysis = Button(toolbar, text="Analysis", command = openAnalysis)
+    bAnalysis = Button(toolbar, text="Analysis", command =lambda: openAnalysis(username))
     bAnalysis.grid(row=1, column=0, padx=30,pady=5)
 
     bAddIncome = Button(toolbar, text="Add Income",command = openAddIncome) # ADD COMMAND
@@ -81,8 +80,7 @@ def launch(username):
     # Back = Button(container, text ="Back")
     # Back.grid(row=16, column=8)
     Home.mainloop()
-    
 
-#launch("tantanu")
+# launch("tantanu")
 
 
