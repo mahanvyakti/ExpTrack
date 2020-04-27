@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter.messagebox as MessageBox
 import mysql.connector as mysql
 import Home, Register
-
+from datetime import *
 
 def launch():
     Login = Tk()
@@ -10,6 +10,76 @@ def launch():
     Login.title("Expenso :  Login ")
     Login.maxsize(900, 600) # specify the max size the window can expand to
     Login.config(bg="skyblue") # specify background color
+
+    def store_new_month_entries(getuser):
+        username = getuser.get()
+        tday = datetime.today()
+        firstDay = datetime(tday.year, tday.month, 1)
+        
+        query = "SELECT date from income WHERE username = %s "
+        try:
+            con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
+            cur = con.cursor()
+            params = (username,)
+            cur.execute(query,params)
+            rows = cur.fetchall()
+
+            Present = False
+            for row in rows:
+                if row[0]==firstDay:
+                    Present = True
+            
+            if not Present:
+                query = "INSERT INTO income (amount,source,date,username) VALUES (%s, %s, %s, %s)"
+                try:
+                    con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
+                    cur = con.cursor()
+                    params = (0,"Null",firstDay, username,)#YYYY-MM-DD HH:MI:SS
+                    cur.execute(query,params)
+                    cur.execute("commit")
+                except mysql.Error as err:  
+                    print(err)
+                else:
+                    cur.close()
+                    con.close()
+
+                
+                query = "INSERT INTO budget (savings,budget,date,username1) VALUES (%s, %s, %s, %s)"
+                try:
+                    con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
+                    cur = con.cursor()
+                    params = (0,0,firstDay,username,)#YYYY-MM-DD HH:MI:SS
+                    cur.execute(query,params)
+                    cur.execute("commit")
+                except mysql.Error as err:
+                    print(err)
+                else:
+                    cur.close()
+                    con.close()
+
+                query = "INSERT INTO expense (category,mode,amount,date,username) VALUES (%s, %s, %s, %s, %s)"
+                try:
+                    con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
+                    cur = con.cursor()
+                    params = ("Null","Null",0,firstDay,username)#YYYY-MM-DD HH:MI:SS
+                    cur.execute(query,params)
+                    cur.execute("commit")
+                    
+                except mysql.Error as err:
+                    print(err)
+                else:
+                    cur.close()
+                    con.close()
+
+
+        except mysql.Error as err:  
+            print(err)
+        else:
+            cur.close()
+            con.close()
+
+        
+
 
     def RedirecttoHome(username):
         Login.withdraw()
@@ -35,6 +105,7 @@ def launch():
             #length = len(rows
             for user in rows:
                 if user[0]==user_name and user[1] == passw:
+                    store_new_month_entries(getuser)
                     RedirecttoHome(user_name)
                     success=True
                     break
@@ -76,6 +147,7 @@ def launch():
     btnRegister.grid(row=12, column=12, padx=10,pady=10)
     RegLabel = Label(frame, text="New to Expenso?")
     RegLabel.grid(row=12, column =10, padx=10, pady=10)
+    
     
     Login.mainloop()
 

@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter.messagebox as MessageBox
 import mysql.connector as mysql
 import Home
+from datetime import *
 
 def launch():
     register = Tk()
@@ -170,11 +171,14 @@ def launch():
         finally:
             cur.close()
 
+        tday = datetime.today()
+        firstDay = datetime(tday.year, tday.month, 1)
+
         query = "INSERT INTO income (amount,source,date,username) VALUES (%s, %s, %s, %s)"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
-            params = (0,"Null","0000-00-00 00:00:00",username)#YYYY-MM-DD HH:MI:SS
+            params = (0,"Null",firstDay, username,)#YYYY-MM-DD HH:MI:SS
             cur.execute(query,params)
             cur.execute("commit")
         except mysql.Error as err:  
@@ -183,11 +187,12 @@ def launch():
             cur.close()
             con.close()
 
+        
         query = "INSERT INTO budget (savings,budget,date,username1) VALUES (%s, %s, %s, %s)"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
-            params = (0,0,"0000-00-00 00:00:00",username)#YYYY-MM-DD HH:MI:SS
+            params = (0,0,firstDay,username,)#YYYY-MM-DD HH:MI:SS
             cur.execute(query,params)
             cur.execute("commit")
         except mysql.Error as err:
@@ -200,7 +205,7 @@ def launch():
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
-            params = ("Null","Null",0,"0000-00-00 00:00:00",username)#YYYY-MM-DD HH:MI:SS
+            params = ("Null","Null",0,firstDay,username)#YYYY-MM-DD HH:MI:SS
             cur.execute(query,params)
             cur.execute("commit")
             

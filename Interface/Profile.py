@@ -8,9 +8,9 @@ from tkinter import Canvas
 # buttons for analaysis, profile, add income, add expense
 def launch(username):
     profile = Tk()
-    profile.geometry("900x500+100+25")
+    profile.geometry("910x630+200+50")
     profile.title("Expenso :  Your Profile ")
-    profile.maxsize(900, 600) # specify the max size the window can expand to
+    profile.maxsize(900, 700) # specify the max size the window can expand to
     profile.config(bg="skyblue") # specify background color
 
     def back():
@@ -18,9 +18,9 @@ def launch(username):
 
     
     def get_profile():
-        eUsername.delete(0,'end')
         eName.delete(0,'end')
         eAddress.delete(0,'end')
+        eUsername.config(text="")
         eAge.delete(0,'end')
         eEmail.delete(0,'end')
         eGender.delete(0,'end')
@@ -37,7 +37,7 @@ def launch(username):
             
             for row in rows:
                 print("For loop 1")
-                eUsername.insert(0, row[0])
+                eUsername.config(text=username)
                 eName.insert(0, row[2])
                 eAddress.insert(0, row[5])
                 eAge.insert(0, row[3])
@@ -55,19 +55,19 @@ def launch(username):
     
     
     # Create left and right frames
-    left_frame = Frame(profile, width=50, height=600, bg='grey')
+    left_frame = Frame(profile, width=50, height=600, bg='skyblue')
     left_frame.grid(row=0, column=0)
 
     right_frame = Frame(profile,  width = 800, height=600, bg='lightgrey')
-    right_frame.grid(row=0, column=1, padx=10, pady=10)
+    right_frame.grid(row=0, column=1, padx=10, pady=50)
 
     container = Frame(right_frame,  width = 400, height=600, bg='grey')
-    container.grid(row=10, column=2, padx=200, pady=10)
+    container.grid(row=10, column=2, padx=200, pady=50)
     toolbar = Frame(left_frame, width=50, height=600, bg='skyblue')
-    toolbar.grid(row=0, column=0)
+    toolbar.grid(row=0, column=0,pady=50)
 
-    btnBack = Button(right_frame, text="Back", command=back)
-    btnBack.grid(row=10, column=0, padx=10, pady=10)
+    btnBack = Button(toolbar, text="Back", command=back)
+    btnBack.grid(row=1, column=0, padx=15, pady=10)
 
     # bProfile = Button(toolbar, text="Profile" ,command = get_profile)
     # bProfile.grid(row=0, column=0, padx=30, pady=5)
@@ -81,15 +81,15 @@ def launch(username):
     # bAddExpense = Button(toolbar, text="Add Expense")
     # bAddExpense.grid(row=3, column=0, padx=30,pady=5)
 
-    lusername =  Label(container, text = "Username: ") 
-    name = Label(container, text = "Name: ") 
-    address = Label(container, text = "Address: ")
-    age =  Label(container, text = "Age: ") 
-    email = Label(container, text = "Email: ")
-    gender = Label(container, text = "Gender: ")
-    password = Label(container, text = "Password: ")
+    lusername =  Label(container, text = "Username: ", font=('Times New Roman', 12)) 
+    name = Label(container, text = "Name: ", font=('Times New Roman', 12)) 
+    address = Label(container, text = "Address: ",font=('Times New Roman', 12))
+    age =  Label(container, text = "Age: ", font=('Times New Roman', 12)) 
+    email = Label(container, text = "Email: ", font=('Times New Roman', 12))
+    gender = Label(container, text = "Gender: ", font=('Times New Roman', 12))
+    password = Label(container, text = "Password: ", font=('Times New Roman', 12))
 
-    eUsername = Entry(container, text="",width=25)
+    eUsername = Label(container, text="",width=21, font=('Times New Roman',10))
     eName = Entry(container, text="",width=25)
     eAddress = Entry(container, text="", width=25)
     eAge = Entry(container, text="",width=25)
@@ -144,8 +144,9 @@ def launch(username):
             cur.close()      
 
     btnUpdate = Button(container, text="Update Profile",font=('Times New Roman', 16, 'bold'), command = update_profile)
-    btnUpdate.grid(row=100, column=10,padx = 50, pady = 50)
+    btnUpdate.grid(row=100, column=10,padx = 50, pady = 30)
     get_profile()
     profile.mainloop()
     
 
+# launch("momo")
