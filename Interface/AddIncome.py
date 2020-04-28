@@ -139,6 +139,7 @@ def launch(username):
             params = (username,firstDay, Date,)
             cur.execute(query,params)
             rows = cur.fetchall()
+            print(rows)
         except mysql.Error as err:
             print(err)
             MessageBox.showerror("Error","Something went wrong !")
@@ -151,12 +152,14 @@ def launch(username):
             MessageBox.showerror("Error !", "Income cannot be negative !")
             eamount.delete(0,'end')
             return
-
-        if rows[0][0] == 0:
+        
+        if rows[-1][0] == 0:
             firstEntry = True
         
         if firstEntry:
             add_income(eamount, edate, esource)
+        else:
+            MessageBox.showerror("Error !","You can add monthly income only once for a month!")
 
 
 
@@ -208,8 +211,6 @@ def launch(username):
             rows = cur.fetchall()
             
             for income in rows:
-                if income[0]==0:
-                    firstEntry = True
                 monthlyIncome += income[0]
                 
         except mysql.Error as err:
@@ -245,12 +246,14 @@ def launch(username):
             eBudget.delete(0,'end')
             return
 
-        if rows[0][0] == 0:
+        if rows[-1][0] == 0:
             firstEntry = True
-        
+
         if firstEntry:
             add_budget(eSavings, eBudget, edate1)
-
+            
+        else:
+            MessageBox.showerror("Error","You can add monthly budget and savings only once for a month!")
 
 
 

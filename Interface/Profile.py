@@ -134,6 +134,7 @@ def launch(username):
             eEmail.delete(0,'end')
             eAddress.delete(0,'end')
             eAge.delete(0,'end')
+            eGender.delete(0,'end')
             ePassword.delete(0,'end')
             
             MessageBox.showinfo("Success","Updated Successfully")

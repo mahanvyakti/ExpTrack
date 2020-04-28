@@ -53,19 +53,19 @@ def launch(username):
     toolbar = Frame(left_frame, width=50, height=600, bg='grey')
     toolbar.grid(row=0, column=0 )
 
-    bProfile = Button(toolbar, text="Profile", command = openProfile) # ADD COMMAND open_profile()
+    bProfile = Button(toolbar, text="Profile", command = openProfile, width=10) # ADD COMMAND open_profile()
     bProfile.grid(row=0, column=0, padx=5, pady=5)
 
-    bAnalysis = Button(toolbar, text="Analysis", command =lambda: openAnalysis(username))
+    bAnalysis = Button(toolbar, text="Analysis", command =lambda: openAnalysis(username), width=10)
     bAnalysis.grid(row=1, column=0, padx=5,pady=5)
 
-    bAddIncome = Button(toolbar, text="Add Income",command = openAddIncome) # ADD COMMAND
+    bAddIncome = Button(toolbar, text="Add Income",command = openAddIncome, width=10) # ADD COMMAND
     bAddIncome.grid(row=2, column=0, padx=5,pady=5)
 
-    bAddExpense = Button(toolbar, text="Add Expense",command = openAddExpense) # ADD COMMAND
+    bAddExpense = Button(toolbar, text="Add Expense",command = openAddExpense, width=10) # ADD COMMAND
     bAddExpense.grid(row=3, column=0, padx=5,pady=5)
 
-    blogout = Button(toolbar, text="Log Out", command = logout)
+    blogout = Button(toolbar, text="Log Out", command = logout, width=10)
     blogout.grid(row=4, column=0, padx=5, pady=5)
 
     notelabel = Label(right_frame, text="NOTE: Always Enter date in 'yyyy-mm-dd hh:mm:ss' format !", font = ('Times New Roman', 12, "bold"), pady =5 )

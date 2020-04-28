@@ -164,7 +164,7 @@ def launch():
             eUsername.delete(0,'end')
             ePassword.delete(0,'end')
             
-            MessageBox.showinfo("Success","Inserted Successfully")
+            MessageBox.showinfo("Success","Registered Successfully")
         except mysql.Error as err:
             print(err)
             MessageBox.showerror("Error","Could not insert !")
