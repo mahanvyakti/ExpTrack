@@ -48,17 +48,17 @@ def launch(username):
             cur.close()
             con.close()
 
-        query = "SELECT budget FROM budget WHERE username1 = %s"
+        query = "SELECT budget FROM budget WHERE username1 = %s  AND (date BETWEEN CAST(%s AS DATETIME) AND CAST(%s AS DATETIME))"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
             cur = con.cursor()
-            params = (username,)
+            params = (username,firstDay,Today,)
             cur.execute(query,params)
             row2 = cur.fetchall()
 
-            e_totalbudget.config(text=str(row2[0][0]))
+            e_totalbudget.config(text=str(row2[-1][0]))
 
-            remaining = int(row2[0][0]) - total_expense
+            remaining = int(row2[-1][0]) - total_expense
             
             if remaining < 0:
                 message = "Out of budget ! You have spent Rs.", str(-remaining)," than your budget !"
@@ -82,20 +82,27 @@ def launch(username):
         DATE = edate.get()
         total_expense = 0
         totalbudget = 0
+        
+        Date= datetime.strptime(DATE, '%Y-%m-%d %H:%M:%S')
+        firstDay = datetime(Date.year, Date.month, 1)
+        firstDay = str(firstDay)
+        Date = str(Date)
+        Today = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        Today = str(Today)
 
         if(int(amount)<0):
             MessageBox.showerror("Error !", "Expense cannot be nagative !")
         
         else:
         
-            query = "SELECT budget FROM budget WHERE username1 = %s"
+            query = "SELECT budget FROM budget WHERE username1 = %s AND (date BETWEEN CAST(%s AS DATETIME) AND CAST(%s AS DATETIME))"
             try:
                 con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
                 cur = con.cursor()
-                params = (username,)
+                params = (username,firstDay,Today,)
                 cur.execute(query,params)
                 row2 = cur.fetchall()
-                totalbudget = row2[0][0]
+                totalbudget = row2[-1][0]
 
             except mysql.Error as err:
                 print(err)
@@ -103,18 +110,18 @@ def launch(username):
                 cur.close()
                 con.close()
 
-            query = "SELECT amount FROM expense WHERE username = %s"
+            query = "SELECT amount FROM expense WHERE username = %s AND (date BETWEEN CAST(%s AS DATETIME) AND CAST(%s AS DATETIME))"
             try:
                 con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
                 cur = con.cursor()
-                params = (username,)
+                params = (username,firstDay, Today, )
                 cur.execute(query,params)
                 row = cur.fetchall()
 
                 
                 for value in row:
                     total_expense += value[0]
-                    print(total_expense)
+                print(total_expense)
 
                 print("Check exp-> Select expense")
                 print("Total expense:", total_expense)

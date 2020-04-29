@@ -6,7 +6,7 @@ from datetime import *
 
 def launch():
     Login = Tk()
-    Login.geometry("900x500+100+25")
+    Login.geometry("900x500+200+50")
     Login.title("Expenso :  Login ")
     Login.maxsize(900, 600) # specify the max size the window can expand to
     Login.config(bg="skyblue") # specify background color

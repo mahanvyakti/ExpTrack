@@ -201,7 +201,7 @@ def launch(username):
 
         monthlyIncome = 0
         firstEntry = False
-        
+        print("FE 1", firstEntry)
         query = "SELECT  amount FROM income WHERE username = %s AND (date BETWEEN CAST(%s AS DATETIME) AND CAST(%s AS DATETIME))"
         try:
             con = mysql.connect(host="localhost",user="root",password="",database="exptrack")
@@ -209,7 +209,11 @@ def launch(username):
             params = (username,firstDay, Date,)
             cur.execute(query,params)
             rows = cur.fetchall()
-            
+            print("FE 2", firstEntry)
+            if rows[0][0] == 0 and len(rows) == 2:
+                firstEntry = True
+                print("FE Set true !")
+            print("FE 3", firstEntry)
             for income in rows:
                 monthlyIncome += income[0]
                 
@@ -240,18 +244,21 @@ def launch(username):
             eBudget.delete(0,'end')
             
             return
+
+        print("monthlyIncome: ",monthlyIncome)
+        print("savings: ",savings)
+        print("budget: ",budget)
+        
+        
         if monthlyIncome < int(savings) + int(budget):  
             MessageBox.showerror("Error !","Sum of budget and savings must be less than monthly income !" )
             eSaving.delete(0,'end')
             eBudget.delete(0,'end')
             return
 
-        if rows[-1][0] == 0:
-            firstEntry = True
-
+        print("FE 4", firstEntry)
         if firstEntry:
             add_budget(eSavings, eBudget, edate1)
-            
         else:
             MessageBox.showerror("Error","You can add monthly budget and savings only once for a month!")
 
