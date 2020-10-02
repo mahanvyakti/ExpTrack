@@ -1,5 +1,3 @@
-import mysql.connector as mysql
-
 def execute_queries(queries, connection):
     status = False
     try:
@@ -17,7 +15,7 @@ def check_if_db_initialised(connection):
     total_tables = 0
     for table in cursor:
         total_tables += 1
-    if total_tables == 4:
+    if total_tables >= 4:
         return True
     else:
         return False
@@ -25,7 +23,7 @@ def check_if_db_initialised(connection):
 def get_initial_queries():
     queries = dict()
     queries['create_budget'] = '''
-    CREATE TABLE `budget` (
+    CREATE TABLE IF NOT EXISTS `budget` (
         `savings` bigint(20) NOT NULL,
         `budget` bigint(20) NOT NULL,
         `date` datetime NOT NULL,
@@ -34,7 +32,7 @@ def get_initial_queries():
     '''
 
     queries['create_expense'] = '''
-    CREATE TABLE `expense` (
+    CREATE TABLE IF NOT EXISTS `expense` (
         `category` varchar(20) NOT NULL,
         `mode` varchar(20) NOT NULL,
         `amount` bigint(20) NOT NULL,
@@ -44,7 +42,7 @@ def get_initial_queries():
     '''
 
     queries['create_income'] = '''
-    CREATE TABLE `income` (
+    CREATE TABLE IF NOT EXISTS `income` (
         `amount` bigint(20) NOT NULL,
         `date` datetime NOT NULL,
         `source` varchar(30) NOT NULL,
@@ -53,7 +51,7 @@ def get_initial_queries():
     '''
 
     queries['create_user'] = '''
-    CREATE TABLE `user` (
+    CREATE TABLE IF NOT EXISTS `user` (
         `username` varchar(20) NOT NULL,
         `password` varchar(20) NOT NULL,
         `name` varchar(20) NOT NULL,
@@ -77,28 +75,28 @@ def get_initial_queries():
     '''
 
     queries['pk_income'] = '''
-    ALTER TABLE `income`
+    ALTER TABLE IF EXISTS `income`
         ADD PRIMARY KEY (`date`,`username`),
         ADD KEY `c1` (`username`);
     '''
 
     queries['pk_user'] = '''
-    ALTER TABLE `user`
+    ALTER TABLE IF EXISTS `user`
         ADD PRIMARY KEY (`username`);
     '''
 
     queries['fk_budget_user'] = '''
-    ALTER TABLE `budget`
+    ALTER TABLE IF EXISTS `budget`
         ADD CONSTRAINT `c3` FOREIGN KEY (`username1`) REFERENCES `user` (`username`);
     '''
 
     queries['fk_expense_user'] = '''
-    ALTER TABLE `expense`
+    ALTER TABLE IF EXISTS `expense`
         ADD CONSTRAINT `c2` FOREIGN KEY (`username`) REFERENCES `user` (`username`);
     '''
 
     queries['fk_income_user'] = '''
-    ALTER TABLE `income`
+    ALTER TABLE IF EXISTS `income`
         ADD CONSTRAINT `c1` FOREIGN KEY (`username`) REFERENCES `user` (`username`);
     '''
 
