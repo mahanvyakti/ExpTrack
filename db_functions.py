@@ -1,5 +1,16 @@
 import mysql.connector as mysql
 
+def execute_queries(queries, connection):
+    status = False
+    try:
+        cursor = connection.cursor()
+        for query in queries.keys():
+            cursor.execute(queries[query])
+        staus = True
+    except Exception as e:
+        print(e)
+    return status
+
 def check_if_db_initialised(connection):
     cursor = connection.cursor()
     cursor.execute('SHOW TABLES')
