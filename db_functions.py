@@ -1,5 +1,16 @@
 import mysql.connector as mysql
 
+def check_if_db_initialised(connection):
+    cursor = connection.cursor()
+    cursor.execute('SHOW TABLES')
+    total_tables = 0
+    for table in cursor:
+        total_tables += 1
+    if total_tables == 4:
+        return True
+    else:
+        return False
+
 def get_initial_queries():
     queries = dict()
     queries['create_budget'] = '''
